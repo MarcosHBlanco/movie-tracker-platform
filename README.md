@@ -45,3 +45,10 @@ This project focuses on understanding:
 ## Development Process
 
 This project is built incrementally with consistent commits to document the learning process and development progress.
+
+## Current Progress
+
+- Initial Express server created
+- /hello route working
+- /about route working
+- GitHub repository initialized
