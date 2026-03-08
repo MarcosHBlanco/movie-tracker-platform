@@ -1,8 +1,11 @@
 const express = require("express");
 
 const app = express();
-
 const PORT = 3000;
+
+app.use(express.json());
+
+let movies = [];
 
 app.get("/hello", (req, res) => {
 	res.send("Hello from my backend server! **Updated");
@@ -13,17 +16,17 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/movies", (req, res) => {
-	const movies = [
-		{ id: 1, title: "Inception", year: 2010 },
-		{ id: 2, title: "Interestellar", year: 2014 },
-	];
-
 	res.json(movies);
 });
 
 app.post("/movies", (req, res) => {
+	const newMovie = req.body;
+
+	movies.push(newMovie);
+
 	res.json({
-		message: "Movie added succesfully",
+		message: "Movie received",
+		movie: newMovie,
 	});
 });
 
