@@ -20,7 +20,10 @@ app.get("/movies", (req, res) => {
 });
 
 app.post("/movies", (req, res) => {
-	const newMovie = req.body;
+	const newMovie = {
+		id: movies.length + 1,
+		...req.body,
+	};
 
 	movies.push(newMovie);
 
