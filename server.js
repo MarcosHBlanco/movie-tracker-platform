@@ -19,6 +19,19 @@ app.get("/movies", (req, res) => {
 	res.json(movies);
 });
 
+app.get("/movies/:id", (req, res) => {
+	const movieId = parseInt(req.params.id);
+
+	const movie = movies.find((m) => m.id === movieId);
+
+	if (!movie) {
+		return res.status(404).json({
+			message: "Movie not found",
+		});
+	}
+	res.json(movie);
+});
+
 app.post("/movies", (req, res) => {
 	const newMovie = {
 		id: movies.length + 1,
@@ -30,6 +43,23 @@ app.post("/movies", (req, res) => {
 	res.json({
 		message: "Movie received",
 		movie: newMovie,
+	});
+});
+
+app.delete("/movies/:id", (req, res) => {
+	const movieId = parseInt(req.params.id);
+
+	const movieIndex = movies.findIndex((m) => m.id === movieId);
+
+	if (movieIndex === -1) {
+		return res.status(404).json({
+			message: "Movie not found",
+		});
+	}
+	movies.splice(movieIndex, 1);
+
+	res.json({
+		message: "Movie deleted succesfully",
 	});
 });
 
