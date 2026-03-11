@@ -18,7 +18,37 @@ exports.getMovieById = (req, res) => {
 };
 
 exports.createMovie = (req, res) => {
-	const newMovie = movieModel.createMovie(req.body);
+	const { title, year } = req.body;
+
+	//validation: title must exist
+	if (!title) {
+		return res.status(400).json({
+			message: "Movie is required",
+		});
+	}
+
+	//validation: title must be a string
+	if (typeof title !== "string") {
+		return res.status(400).json({
+			message: "Title must be a string",
+		});
+	}
+
+	//validation: year must exist
+	if (!year) {
+		return res.status(400).json({
+			message: "Year is required",
+		});
+	}
+
+	//validation: year must be a number
+	if (typeof year !== "number") {
+		return res.status(400).json({
+			message: "Year must be a number",
+		});
+	}
+
+	const newMovie = movieModel.createMovie({ title, year });
 
 	res.status(201).json({
 		message: "Movie created",
