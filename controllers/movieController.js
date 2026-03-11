@@ -1,13 +1,14 @@
-let movies = [];
+const movieModel = require("../models/movieModels");
 
 exports.getMovies = (req, res) => {
+	const movies = movieModel.getAllMovies();
 	res.json(movies);
 };
 
 exports.getMovieById = (req, res) => {
 	const movieId = parseInt(req.params.id);
 
-	const movie = movies.find((m) => m.id === movieId);
+	const movie = movieModel.getMovieById(movieId);
 
 	if (!movie) {
 		return res.status(404).json({ message: "Movie not found" });
@@ -17,12 +18,7 @@ exports.getMovieById = (req, res) => {
 };
 
 exports.createMovie = (req, res) => {
-	const newMovie = {
-		id: movies.length + 1,
-		...req.body,
-	};
-
-	movies.push(newMovie);
+	const newMovie = movieModel.createMovie(req.body);
 
 	res.status(201).json({
 		message: "Movie created",
@@ -33,13 +29,11 @@ exports.createMovie = (req, res) => {
 exports.deleteMovie = (req, res) => {
 	const movieId = parseInt(req.params.id);
 
-	const movieIndex = movies.findIndex((m) => m.id === movieId);
+	const deleted = movieModel.deleteMovie(movieId);
 
-	if (movieIndex === -1) {
+	if (!deleted) {
 		return res.status(404).json({ message: "Movie not found" });
 	}
-
-	movies.splice(movieIndex, 1);
 
 	res.status(201).json({ message: "Movie deleted" });
 };
