@@ -21,7 +21,7 @@ exports.createMovie = (req, res) => {
 	const { title, year } = req.body;
 
 	//validation: title must exist
-	if (!title) {
+	if (!title || title.trim() === "") {
 		return res.status(400).json({
 			message: "Movie is required",
 		});
@@ -66,4 +66,35 @@ exports.deleteMovie = (req, res) => {
 	}
 
 	res.status(201).json({ message: "Movie deleted" });
+};
+
+exports.updateMovie = (req, res) => {
+	const movieId = parseInt(req.params.id);
+
+	const { title, year } = req.body;
+
+	//validation
+	if (!title || title.trim() === "" || typeof title !== "string") {
+		return res.status(400).json({
+			message: "Title must be a non-empty string",
+		});
+	}
+	if (!year || typeof year !== "number") {
+		return res.status(400).json({
+			message: "Year must be a number",
+		});
+	}
+
+	const updatedMovie = movieModel.updateMovie(movieId, { title, year });
+
+	if (!updatedMovie) {
+		return res.status(404).json({
+			message: "Movie not found",
+		});
+	}
+
+	res.json({
+		message: "Movie updated succesfully",
+		movie: updatedMovie,
+	});
 };

@@ -32,3 +32,16 @@ exports.deleteMovie = (id) => {
 
 	return true;
 };
+
+exports.updateMovie = (id, movieData) => {
+	const movie = movies.find((movie) => movie.id === id);
+
+	if (!movie) {
+		return null;
+	}
+
+	movie.title = movieData.title;
+	movie.year = movieData.year;
+
+	return movie;
+};
